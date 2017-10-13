@@ -1,0 +1,51 @@
+<html>
+<head>
+    {% for app_num, prices in grouped.items() %}
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Date', 'Price'],
+          {% for val in prices %}
+          ['{{val.date.strftime('%Y-%m-%d %H:%M')}}',  {{val.rent}}],
+          {% endfor %}
+        ]);
+
+        var options = {
+          title: '{{app_num}} Rent',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('{{app_num}}_Rent'));
+
+        chart.draw(data, options);
+      }
+    </script>
+
+{% endfor %}
+
+</head>
+<body>
+
+<h2>I made a thing</h2>
+
+{% for app_num, prices in grouped.items() %}
+
+<h2>
+<a href = "{{ url_for('single_unit', app_number = app_num.replace("#", ""))}}">{{app_num}}</a></h2>
+<h3>{{prices[0].type}}</h3>
+
+<div>
+<div id="{{app_num + "_Rent"}}" style="width: 900px; height: 500px"></div>
+</div>
+
+{% endfor %}
+
+</body>
+
+</html>
