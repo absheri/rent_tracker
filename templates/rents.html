@@ -40,6 +40,7 @@
 <div class="apartment">
     <h2><a href = "{{ url_for('single_unit', apartment_id = app.id)}}">{{app.app_number}}</a></h2>
     <h3>{{app.type}}</h3>
+    <h3>${{rents[-1].rent}}</h3>
     <div class="charts">
         <img class=floor_plan src={{app.path_to_floor_plan}} >
         <div class=rents id="{{app.app_number + "_Rent"}}"></div>

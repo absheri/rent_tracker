@@ -26,18 +26,10 @@ h2 {
 p,
 dd,
 dt {}
-
-a {
-    text-decoration: none;
-    font-size: .75em;
-}
-
-.floor_plan {
-    width: 50%;
-}
-
-.rents{
-    width: 50%;
+.apartment {
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 2%;
 }
 
 .charts {
