@@ -1,6 +1,7 @@
 <html>
 <head>
-    {% for app_num, prices in grouped.items() %}
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+    {% for app, rents in grouped %}
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
@@ -10,7 +11,7 @@
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
           ['Date', 'Price'],
-          {% for val in prices %}
+          {% for val in rents %}
           ['{{val.date.strftime('%Y-%m-%d %H:%M')}}',  {{val.rent}}],
           {% endfor %}
         ]);
@@ -21,7 +22,7 @@
           legend: { position: 'bottom' }
         };
 
-        var chart = new google.visualization.LineChart(document.getElementById('{{app_num}}_Rent'));
+        var chart = new google.visualization.LineChart(document.getElementById('{{app.app_number}}_Rent'));
 
         chart.draw(data, options);
       }
@@ -34,14 +35,15 @@
 
 <h2>I made a thing</h2>
 
-{% for app_num, prices in grouped.items() %}
+{% for app, rents in grouped %}
 
-<h2>
-<a href = "{{ url_for('single_unit', app_number = app_num.replace("#", ""))}}">{{app_num}}</a></h2>
-<h3>{{prices[0].type}}</h3>
-
-<div>
-<div id="{{app_num + "_Rent"}}" style="width: 900px; height: 500px"></div>
+<div class="apartment">
+    <h2><a href = "{{ url_for('single_unit', apartment_id = app.id)}}">{{app.app_number}}</a></h2>
+    <h3>{{app.type}}</h3>
+    <div class="charts">
+        <img class=floor_plan src={{app.path_to_floor_plan}} >
+        <div class=rents id="{{app.app_number + "_Rent"}}"></div>
+    </div>
 </div>
 
 {% endfor %}

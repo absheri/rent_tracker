@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database import Rent, Base
+from database import Apartment, Rent, Base
 app = Flask(__name__)
 
 
@@ -15,20 +15,18 @@ session = DBSession()
 @app.route('/')
 @app.route('/hello')
 def all_units():
-    rents = session.query(Rent).filter_by()
-    grouped = {}
-    for x in rents:
-        if x.app_number in grouped:
-            grouped[x.app_number].append(x)
-        else:
-            grouped[x.app_number] = [x]
+    aparts = session.query(Apartment).filter_by()
+    grouped = []
+    for x in aparts:
+        rents = session.query(Rent).filter_by(apartment_id=x.id)
+        grouped.append((x, rents))
 
     return render_template('rents.html', grouped=grouped)
 
 
-@app.route('/rents/<string:app_number>')
-def single_unit(app_number):
-    rents = session.query(Rent).filter_by(app_number="#"+app_number)
+@app.route('/rents/<string:apartment_id>')
+def single_unit(apartment_id):
+    rents = session.query(Rent).filter_by(apartment_id=apartment_id)
     output = ""
     for x in rents:
         output += x.date.strftime('%Y-%m-%d %H:%M') + " - $" + str(x.rent)

@@ -1,0 +1,46 @@
+body {
+    font-family: sans-serif;
+    text-align: center;
+}
+
+h1,
+h2,
+h3,
+h4 { }
+
+
+h1,
+h2 {
+    font-family: 'georgia', serif;
+    margin: 0;
+}
+
+h1 {
+    border-bottom: 2px solid #eee;
+}
+
+h2 {
+    font-size: 1.2em;
+}
+
+p,
+dd,
+dt {}
+
+a {
+    text-decoration: none;
+    font-size: .75em;
+}
+
+.floor_plan {
+    width: 50%;
+}
+
+.rents{
+    width: 50%;
+}
+
+.charts {
+    display: flex;
+
+}
