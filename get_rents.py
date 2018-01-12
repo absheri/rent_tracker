@@ -4,9 +4,6 @@ from bs4 import BeautifulSoup
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database import Apartment, Rent, Base
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from database import Rent
 
 r = requests.get("http://www.thelouisa.com/availableunits.aspx?myOlePropertyId=544239")
 
