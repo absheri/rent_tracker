@@ -3,32 +3,32 @@
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
     {% for app, rents in grouped %}
 
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+          google.charts.load('current', {'packages':['corechart']});
+          google.charts.setOnLoadCallback(drawChart);
 
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Date', 'Price'],
-          {% for val in rents %}
-          ['{{val.date.strftime('%Y-%m-%d %H:%M')}}',  {{val.rent}}],
-          {% endfor %}
-        ]);
+          function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+              ['Date', 'Price'],
+              {% for val in rents %}
+              ['{{val.date.strftime('%Y-%m-%d %H:%M')}}',  {{val.rent}}],
+              {% endfor %}
+            ]);
 
-        var options = {
-          title: '{{app_num}} Rent',
-          curveType: 'function',
-          legend: { position: 'bottom' }
-        };
+            var options = {
+              title: '{{app_num}} Rent',
+              curveType: 'function',
+              legend: { position: 'bottom' }
+            };
 
-        var chart = new google.visualization.LineChart(document.getElementById('{{app.app_number}}_Rent'));
+            var chart = new google.visualization.LineChart(document.getElementById('{{app.app_number}}_Rent'));
 
-        chart.draw(data, options);
-      }
-    </script>
+            chart.draw(data, options);
+          }
+        </script>
 
-{% endfor %}
+    {% endfor %}
 
 </head>
 <body>
@@ -37,15 +37,19 @@
 
 {% for app, rents in grouped %}
 
-<div class="apartment">
-    <h2><a href = "{{ url_for('single_unit', apartment_id = app.id)}}">{{app.app_number}}</a></h2>
-    <h3>{{app.type}}</h3>
-    <h3>${{rents[-1].rent}}</h3>
-    <div class="charts">
-        <img class=floor_plan src={{app.path_to_floor_plan}} >
-        <div class=rents id="{{app.app_number + "_Rent"}}"></div>
-    </div>
-</div>
+    {% if rents[-1].date > two_days_ago %}
+
+        <div class="apartment">
+            <h2><a href = "{{ url_for('single_unit', apartment_id = app.id)}}">{{app.app_number}}</a></h2>
+            <h3>{{app.type}}</h3>
+            <h3>${{rents[-1].rent}}</h3>
+            <div class="charts">
+                <img class=floor_plan src={{app.path_to_floor_plan}} >
+                <div class=rents id="{{app.app_number + "_Rent"}}"></div>
+            </div>
+        </div>
+
+    {% endif %}
 
 {% endfor %}
 
